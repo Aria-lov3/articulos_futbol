@@ -10,15 +10,13 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const titleColor = Color(0xFF2E3A47);
     const buttonColor = Color(0xFF6C757D);
-    const priceColor = Color(0xFF4CAF50);
+    const priceColor = Color.fromARGB(255, 56, 93, 255);
     const textColor = Color(0xFF333333);
 
     final cart = Provider.of<CartProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tu Carrito'),
-      ),
+      appBar: AppBar(title: const Text('Tu Carrito')),
       body: Column(
         children: [
           Expanded(
@@ -29,7 +27,10 @@ class CartScreen extends StatelessWidget {
                 final cartKey = cart.items.keys.toList()[i];
                 return Card(
                   color: Colors.white,
-                  margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 4,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: ListTile(
@@ -55,7 +56,10 @@ class CartScreen extends StatelessWidget {
                           if (cartItem.size != null)
                             Text(
                               'Talla: ${cartItem.size}',
-                              style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF38B6FF)),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF38B6FF),
+                              ),
                             ),
                           Text(
                             'Total: \$${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}',
@@ -67,7 +71,10 @@ class CartScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.remove, color: Color(0xFF6C757D)),
+                            icon: const Icon(
+                              Icons.remove,
+                              color: Color(0xFF6C757D),
+                            ),
                             onPressed: () {
                               cart.removeSingleItem(cartKey);
                             },
@@ -81,13 +88,19 @@ class CartScreen extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add, color: Color(0xFF38B6FF)),
+                            icon: const Icon(
+                              Icons.add,
+                              color: Color(0xFF38B6FF),
+                            ),
                             onPressed: () {
                               cart.incrementItemQuantity(cartKey);
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.redAccent),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.redAccent,
+                            ),
                             onPressed: () {
                               cart.removeItem(cartKey);
                             },
@@ -109,11 +122,23 @@ class CartScreen extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
-                  _summaryRow('Subtotal:', '\$${cart.subtotalAmount.toStringAsFixed(2)}', textColor),
+                  _summaryRow(
+                    'Subtotal:',
+                    '\$${cart.subtotalAmount.toStringAsFixed(2)}',
+                    textColor,
+                  ),
                   const SizedBox(height: 5),
-                  _summaryRow('IVA (16%):', '\$${cart.ivaAmount.toStringAsFixed(2)}', textColor),
+                  _summaryRow(
+                    'IVA (16%):',
+                    '\$${cart.ivaAmount.toStringAsFixed(2)}',
+                    textColor,
+                  ),
                   const SizedBox(height: 5),
-                  _summaryRow('Envío:', '\$${cart.shippingCost.toStringAsFixed(2)}', textColor),
+                  _summaryRow(
+                    'Envío:',
+                    '\$${cart.shippingCost.toStringAsFixed(2)}',
+                    textColor,
+                  ),
                   const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,15 +178,19 @@ class CartScreen extends StatelessWidget {
                           : () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (ctx) => const CheckoutScreen()),
+                                  builder: (ctx) => const CheckoutScreen(),
+                                ),
                               );
                             },
                       child: const Text(
                         'Comprar Ahora',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

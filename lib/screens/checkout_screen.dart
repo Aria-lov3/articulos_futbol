@@ -25,6 +25,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
+  String _selectedBrand = 'Visa';
 
   void onCreditCardModelChange(CreditCardModel? creditCardModel) {
     if (creditCardModel == null) return;
@@ -151,7 +152,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                     const Divider(),
                     const Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -164,13 +165,55 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          ChoiceChip(
+                            label: const Text('Visa'),
+                            selected: _selectedBrand == 'Visa',
+                            onSelected: (selected) {
+                              if (selected) setState(() => _selectedBrand = 'Visa');
+                            },
+                            selectedColor: const Color(0xFF38B6FF),
+                            labelStyle: TextStyle(
+                              color: _selectedBrand == 'Visa' ? Colors.white : titleColor,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          ChoiceChip(
+                            label: const Text('MasterCard'),
+                            selected: _selectedBrand == 'MasterCard',
+                            onSelected: (selected) {
+                              if (selected) setState(() => _selectedBrand = 'MasterCard');
+                            },
+                            selectedColor: const Color(0xFF38B6FF),
+                            labelStyle: TextStyle(
+                              color: _selectedBrand == 'MasterCard' ? Colors.white : titleColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     CreditCardWidget(
                       cardNumber: cardNumber,
                       expiryDate: expiryDate,
                       cardHolderName: cardHolderName,
                       cvvCode: cvvCode,
                       showBackView: isCvvFocused,
-                      onCreditCardWidgetChange: (CreditCardBrand brand) {},
+                      onCreditCardWidgetChange: (CreditCardBrand brand) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (mounted) {
+                            setState(() {
+                              if (brand.brandName == CardType.visa) {
+                                _selectedBrand = 'Visa';
+                              } else if (brand.brandName == CardType.mastercard) {
+                                _selectedBrand = 'MasterCard';
+                              }
+                            });
+                          }
+                        });
+                      },
                       obscureCardNumber: true,
                       obscureCardCvv: true,
                       isHolderNameVisible: true,
